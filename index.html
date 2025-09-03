@@ -20,12 +20,14 @@
       --accent-dark: #388e3c;
     }
 
-    body {
+    html, body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
       transition: background 0.3s, color 0.3s;
+      height: 100%;
+      overflow-x: hidden; /* 🚫 убираем горизонтальный скролл */
     }
 
     header {
@@ -60,19 +62,23 @@
     #themeToggle:hover { background: var(--accent-dark); }
 
     main {
-      padding-top: 80px; /* отступ под фиксированный header */
-      overflow: hidden;
+      position: relative;
+      top: 80px;
+      height: calc(100vh - 80px);
+      overflow: hidden; /* 🚫 убираем возможность свайпа */
     }
 
     /* страницы */
     .page {
       position: absolute;
-      top: 80px;
-      left: 100%;
+      top: 0;
+      left: 100%; /* скрыта справа */
       width: 100%;
-      min-height: calc(100vh - 80px);
+      height: 100%;
+      overflow-y: auto; /* ✅ скроллим только внутри активной */
       padding: 20px;
       box-sizing: border-box;
+      background: var(--bg);
       transition: left 0.4s ease;
     }
     .page.active { left: 0; }

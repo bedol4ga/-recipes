@@ -4,29 +4,86 @@
   <meta charset="UTF-8">
   <title>Меню ресторана</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
+    :root {
+      --bg: #e8f5e9;
+      --card: #ffffff;
+      --text: #2e7d32;
+      --accent: #43a047;
+      --accent-dark: #2e7d32;
+    }
+    body.dark {
+      --bg: #1b1f1b;
+      --card: #2a2f2a;
+      --text: #c8e6c9;
+      --accent: #66bb6a;
+      --accent-dark: #388e3c;
+    }
+
     body {
-      font-family: "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ffecd2, #fcb69f);
-      color: #333;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
     }
-    h1 {
+
+    header {
       text-align: center;
-      padding: 30px;
-      font-size: 36px;
-      color: #222;
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--bg);
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+      color: var(--text);
+    }
+    #themeToggle {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    #themeToggle:hover { background: var(--accent-dark); }
+
+    main {
+      padding-top: 80px; /* отступ под фиксированный header */
+      overflow: hidden;
+    }
+
+    /* страницы */
+    .page {
+      position: absolute;
+      top: 80px;
+      left: 100%;
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      padding: 20px;
+      box-sizing: border-box;
+      transition: left 0.4s ease;
+    }
+    .page.active { left: 0; }
+
+    /* меню */
     .menu {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
+      gap: 20px;
       max-width: 1400px;
       margin: auto;
-      padding: 20px;
     }
     @media (max-width: 1200px) {
       .menu { grid-template-columns: repeat(2, 1fr); }
@@ -35,109 +92,102 @@
       .menu { grid-template-columns: 1fr; }
     }
     .card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      padding: 25px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
     }
     .card h2 {
-      font-size: 22px;
-      margin-bottom: 15px;
-      color: #ff6600;
-      border-bottom: 2px solid #ffe0cc;
-      padding-bottom: 8px;
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--accent-dark);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 6px;
       text-align: center;
     }
     .card ul {
       list-style: none;
       padding: 0;
-      margin: 0 0 15px 0;
+      margin: 0 0 12px 0;
     }
     .card ul li {
-      padding: 10px;
-      border-bottom: 1px solid #f2f2f2;
-      font-size: 18px;
+      padding: 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      font-size: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
     }
-    .card ul li:hover { background: #fff6f0; }
+    .card ul li:hover { background: rgba(76, 175, 80, 0.1); }
     .dish-info {
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .dish-info img {
-      width: 35px;
-      height: 35px;
+      width: 32px;
+      height: 32px;
       object-fit: cover;
       border-radius: 6px;
     }
     .btn {
-      background: #ff6600;
+      background: var(--accent);
       color: #fff;
       border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
-      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.3s;
       margin-top: 5px;
     }
-    .btn:hover { background: #e05500; }
+    .btn:hover { background: var(--accent-dark); }
     .delete-btn {
       background: none;
       border: none;
-      color: #cc0000;
-      font-size: 18px;
+      color: #c62828;
+      font-size: 16px;
       cursor: pointer;
-      padding: 0 5px;
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.2s;
     }
     .card ul li:hover .delete-btn { opacity: 1; }
 
     /* страница рецепта */
     #recipePage {
-      display: none;
       max-width: 800px;
-      margin: 40px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      margin: auto;
     }
-    #recipePage h2 { margin-bottom: 15px; color: #ff6600; }
+    #recipePage h2 { margin-bottom: 12px; color: var(--accent-dark); }
     #recipeImage {
       max-width: 100%;
-      border-radius: 15px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
       display: none;
     }
     #recipeText {
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 16px;
     }
     #recipeEditor {
       display: none;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     #recipeEditor textarea {
       width: 100%;
-      height: 150px;
+      height: 120px;
       padding: 10px;
-      font-size: 16px;
-      border-radius: 10px;
+      font-size: 14px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       resize: vertical;
     }
-    #backBtn { margin-top: 20px; background: #555; }
+    #backBtn { background: #555; }
     #backBtn:hover { background: #333; }
 
     /* модальное окно */
@@ -149,73 +199,78 @@
       background: rgba(0,0,0,0.6);
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 200;
     }
     #dishModal .modal-content {
-      background: #fff;
+      background: var(--card);
       padding: 20px;
-      border-radius: 15px;
-      max-width: 90%;
+      border-radius: 12px;
       width: 300px;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
     }
     #dishModal input {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       margin: 10px 0;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <h1 id="pageTitle">Меню</h1>
+  <header>
+    <h1 id="pageTitle">Меню</h1>
+    <button id="themeToggle"></button>
+  </header>
 
-  <!-- Главная страница -->
-  <div id="menuPage" class="menu">
-    <div class="card">
-      <h2>🥐 Завтраки</h2>
-      <ul id="breakfast"></ul>
-      <button class="btn" onclick="addDish('breakfast')">Добавить блюдо</button>
-    </div>
-    <div class="card">
-      <h2>🍲 Горячее</h2>
-      <ul id="hot"></ul>
-      <button class="btn" onclick="addDish('hot')">Добавить блюдо</button>
-    </div>
-    <div class="card">
-      <h2>🥧 Выпечка</h2>
-      <ul id="bakery"></ul>
-      <button class="btn" onclick="addDish('bakery')">Добавить блюдо</button>
-    </div>
-    <div class="card">
-      <h2>🥗 Салаты</h2>
-      <ul id="salads"></ul>
-      <button class="btn" onclick="addDish('salads')">Добавить блюдо</button>
-    </div>
-  </div>
-
-  <!-- Страница рецепта -->
-  <div id="recipePage">
-    <h2 id="recipeTitle"></h2>
-    <img id="recipeImage" alt="Фото блюда">
-    <p id="recipeText"></p>
-
-    <!-- редактор -->
-    <div id="recipeEditor">
-      <textarea id="recipeInput"></textarea>
-      <button class="btn" onclick="saveRecipe()">💾 Сохранить рецепт</button>
-      <input type="file" id="imageInput" accept="image/*">
-      <button class="btn" onclick="saveImage()">📸 Сохранить картинку</button>
+  <main>
+    <!-- Главная страница -->
+    <div id="menuPage" class="page active">
+      <div class="menu">
+        <div class="card">
+          <h2>🥐 Завтраки</h2>
+          <ul id="breakfast"></ul>
+          <button class="btn" onclick="addDish('breakfast')">Добавить блюдо</button>
+        </div>
+        <div class="card">
+          <h2>🍲 Горячее</h2>
+          <ul id="hot"></ul>
+          <button class="btn" onclick="addDish('hot')">Добавить блюдо</button>
+        </div>
+        <div class="card">
+          <h2>🥧 Выпечка</h2>
+          <ul id="bakery"></ul>
+          <button class="btn" onclick="addDish('bakery')">Добавить блюдо</button>
+        </div>
+        <div class="card">
+          <h2>🥗 Салаты</h2>
+          <ul id="salads"></ul>
+          <button class="btn" onclick="addDish('salads')">Добавить блюдо</button>
+        </div>
+      </div>
     </div>
 
-    <button class="btn" id="editBtn" onclick="editRecipe()">✏️ Редактировать рецепт</button>
-    <br>
-    <button class="btn" id="backBtn" onclick="showMenu()">⬅ Назад к меню</button>
-  </div>
+    <!-- Страница рецепта -->
+    <div id="recipePage" class="page">
+      <h2 id="recipeTitle"></h2>
+      <img id="recipeImage" alt="Фото блюда">
+      <p id="recipeText"></p>
 
-  <!-- модальное окно добавления блюда -->
+      <div id="recipeEditor">
+        <textarea id="recipeInput"></textarea>
+        <button class="btn" onclick="saveRecipe()">💾 Сохранить рецепт</button>
+        <input type="file" id="imageInput" accept="image/*">
+        <button class="btn" onclick="saveImage()">📸 Сохранить картинку</button>
+      </div>
+
+      <button class="btn" id="editBtn" onclick="editRecipe()">✏️ Редактировать рецепт</button>
+      <br>
+      <button class="btn" id="backBtn" onclick="showMenu()">⬅ Назад к меню</button>
+    </div>
+  </main>
+
+  <!-- Модалка -->
   <div id="dishModal">
     <div class="modal-content">
       <h3>Новое блюдо</h3>
@@ -228,39 +283,22 @@
   <script>
     const defaultMenu = {
       breakfast: [
-        { name: "Омлет с овощами", recipe: "Взбейте яйца, добавьте овощи, обжарьте на сковороде.", image: "" },
-        { name: "Сырники со сметаной", recipe: "Творог + яйцо + мука. Слепить сырники, обжарить, подать со сметаной.", image: "" },
-        { name: "Каша овсяная с фруктами", recipe: "Сварить овсянку на молоке, добавить яблоки, бананы или ягоды.", image: "" }
+        { name: "Омлет с овощами", recipe: "Взбейте яйца, добавьте овощи, обжарьте.", image: "" },
+        { name: "Сырники", recipe: "Творог + яйцо + мука. Обжарить и подать со сметаной.", image: "" }
       ],
       hot: [
-        { name: "Борщ украинский", recipe: "Свекла, капуста, картошка, морковь, лук, мясо. Варить 1 час.", image: "" },
-        { name: "Паста карбонара", recipe: "Паста + бекон + яйцо + сыр пармезан. Всё перемешать.", image: "" },
-        { name: "Курица с картофелем", recipe: "Запечь курицу с картошкой и специями в духовке.", image: "" }
+        { name: "Борщ", recipe: "Свекла, капуста, картошка, мясо. Варить 1 час.", image: "" },
+        { name: "Паста карбонара", recipe: "Паста + бекон + яйцо + сыр пармезан.", image: "" }
       ],
       bakery: [
-        { name: "Круассан", recipe: "Слоёное тесто, масло. Свернуть и выпекать до золотистой корочки.", image: "" },
-        { name: "Пирожки с капустой", recipe: "Тесто + тушёная капуста. Сформировать пирожки и запечь/обжарить.", image: "" },
-        { name: "Шоколадный маффин", recipe: "Какао + мука + яйца + масло. Выпекать 20 минут.", image: "" }
+        { name: "Круассан", recipe: "Слоёное тесто, масло. Выпекать до золотистой корочки.", image: "" }
       ],
       salads: [
-        { name: "Цезарь", recipe: "Курица, салат романо, сухарики, соус цезарь.", image: "" },
-        { name: "Оливье", recipe: "Картофель, морковь, огурцы, колбаса, яйца, майонез.", image: "" },
-        { name: "Греческий", recipe: "Огурцы, помидоры, маслины, фета, оливковое масло.", image: "" }
+        { name: "Цезарь", recipe: "Курица, салат, сухарики, соус цезарь.", image: "" }
       ]
     };
 
-    let menu;
-    try {
-      menu = JSON.parse(localStorage.getItem("menu"));
-      if (!menu || typeof menu !== "object") {
-        menu = defaultMenu;
-        localStorage.setItem("menu", JSON.stringify(menu));
-      }
-    } catch (e) {
-      menu = defaultMenu;
-      localStorage.setItem("menu", JSON.stringify(menu));
-    }
-
+    let menu = JSON.parse(localStorage.getItem("menu")) || defaultMenu;
     let currentCategory = null;
     let currentIndex = null;
     let modalCategory = null;
@@ -270,11 +308,9 @@
         const ul = document.getElementById(category);
         if (!ul) continue;
         ul.innerHTML = "";
-
         if (menu[category].length === 0) {
           ul.innerHTML = "<li style='text-align:center; color:#888;'>Нет блюд</li>";
         }
-
         menu[category].forEach((dish, index) => {
           const li = document.createElement("li");
           li.innerHTML = `
@@ -293,13 +329,11 @@
       modalCategory = categoryId;
       document.getElementById("dishModal").style.display = "flex";
     }
-
     function closeDishModal() {
       document.getElementById("dishModal").style.display = "none";
       document.getElementById("newDishName").value = "";
       modalCategory = null;
     }
-
     function saveNewDish() {
       const dishName = document.getElementById("newDishName").value.trim();
       if (!dishName) return;
@@ -308,7 +342,6 @@
       renderMenu();
       closeDishModal();
     }
-
     function deleteDish(categoryId, index, event) {
       event.stopPropagation();
       menu[categoryId].splice(index, 1);
@@ -316,21 +349,21 @@
       renderMenu();
     }
 
+    function switchPage(fromId, toId) {
+      document.getElementById(fromId).classList.remove("active");
+      document.getElementById(toId).classList.add("active");
+    }
+
     function showRecipe(category, index) {
       currentCategory = category;
       currentIndex = index;
       const dish = menu[category][index];
-
       document.getElementById("pageTitle").innerText = dish.name;
-      document.getElementById("menuPage").style.display = "none";
-      document.getElementById("recipePage").style.display = "block";
       document.getElementById("recipeTitle").innerText = dish.name;
+      document.getElementById("recipeText").innerText = dish.recipe || "Рецепт пока не добавлен.";
       document.getElementById("recipeEditor").style.display = "none";
       document.getElementById("recipeText").style.display = "block";
       document.getElementById("editBtn").style.display = "inline-block";
-
-      document.getElementById("recipeText").innerText =
-        dish.recipe && dish.recipe.trim() !== "" ? dish.recipe : "Рецепт пока не добавлен.";
 
       const img = document.getElementById("recipeImage");
       if (dish.image) {
@@ -339,10 +372,10 @@
       } else {
         img.style.display = "none";
       }
+      switchPage("menuPage", "recipePage");
     }
 
     function editRecipe() {
-      if (currentCategory === null || currentIndex === null) return;
       const dish = menu[currentCategory][currentIndex];
       document.getElementById("recipeText").style.display = "none";
       document.getElementById("recipeEditor").style.display = "flex";
@@ -351,7 +384,6 @@
     }
 
     function saveRecipe() {
-      if (currentCategory === null || currentIndex === null) return;
       const newRecipe = document.getElementById("recipeInput").value;
       menu[currentCategory][currentIndex].recipe = newRecipe.trim();
       saveMenu();
@@ -359,9 +391,7 @@
     }
 
     function saveImage() {
-      if (currentCategory === null || currentIndex === null) return;
-      const fileInput = document.getElementById("imageInput");
-      const file = fileInput.files[0];
+      const file = document.getElementById("imageInput").files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -374,13 +404,29 @@
 
     function showMenu() {
       document.getElementById("pageTitle").innerText = "Меню";
-      document.getElementById("menuPage").style.display = "grid";
-      document.getElementById("recipePage").style.display = "none";
+      switchPage("recipePage", "menuPage");
     }
 
     function saveMenu() {
       localStorage.setItem("menu", JSON.stringify(menu));
     }
+
+    // === Тема ===
+    const themeBtn = document.getElementById("themeToggle");
+    function updateThemeButton() {
+      themeBtn.textContent = document.body.classList.contains("dark")
+        ? "☀️ Светлая тема"
+        : "🌙 Тёмная тема";
+    }
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+      updateThemeButton();
+    });
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+    updateThemeButton();
 
     renderMenu();
   </script>

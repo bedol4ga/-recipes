@@ -2,14 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Меню</title>
+  <title>Меню ресторана</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Меню">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Меню">
 
-<!-- Иконка для ярлыка -->
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/7064/7064359.png">
+  <!-- Иконка -->
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/7064/7064359.png">
   <style>
 :root {
   --bg: #e9f7ec;
@@ -37,7 +37,7 @@ body, html {
   height: 100%;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden; /* убираем горизонтальный скролл */
+  overflow-x: hidden;
 }
 
 header {
@@ -101,7 +101,7 @@ main {
   display: grid;
   gap: 16px;
   width: 100%;
-  max-width: 100%;   /* убрали фикс 1200px */
+  max-width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
   grid-template-columns: 1fr; /* по умолчанию одна колонка */
@@ -206,7 +206,22 @@ main {
   display: none;
 }
 
-
+/* 🚫 ГЛОБАЛЬНЫЙ ФИКС ПРОТИВ ВЫЛАЗАНИЙ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  max-width: 100vw;
+}
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+.menu, .card, header, main, .page {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
   </style>
 </head>
 <body>

@@ -11,177 +11,175 @@
 <!-- Иконка для ярлыка -->
 <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/7064/7064359.png">
   <style>
-    :root {
-      --bg: #e9f7ec;
-      --card: #fff;
-      --text: #1b4332;
-      --accent: #2d6a4f;
-      --accent-hover: #1b4332;
-      --shadow: rgba(0,0,0,0.15);
-    }
-    body.dark {
-      --bg: #1b4332;
-      --card: #2d6a4f;
-      --text: #f1f8f5;
-      --accent: #95d5b2;
-      --accent-hover: #74c69d;
-      --shadow: rgba(0,0,0,0.5);
-    }
+:root {
+  --bg: #e9f7ec;
+  --card: #fff;
+  --text: #1b4332;
+  --accent: #2d6a4f;
+  --accent-hover: #1b4332;
+  --shadow: rgba(0,0,0,0.15);
+}
+body.dark {
+  --bg: #1b4332;
+  --card: #2d6a4f;
+  --text: #f1f8f5;
+  --accent: #95d5b2;
+  --accent-hover: #74c69d;
+  --shadow: rgba(0,0,0,0.5);
+}
 
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      height: 100%;
-    }
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+  overflow-x: hidden;
+}
 
-    header {
-      text-align: center;
-      padding: 15px 20px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: var(--bg);
-      z-index: 100;
-      box-shadow: 0 2px 6px var(--shadow);
-    }
-    header .header-content {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-      color: var(--text);
-    }
-    header button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      font-size: 14px;
-    }
-    header button:hover { background: var(--accent-hover); }
+header {
+  text-align: center;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--bg);
+  z-index: 100;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+header .header-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--text);
+}
+header button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 14px;
+}
+header button:hover { background: var(--accent-hover); }
 
-    main {
+main {
   position: relative;
   top: 80px;
   min-height: calc(100vh - 80px);
   width: 100%;
-  overflow-y: auto; /* вместо hidden */
-  overflow-x: hidden; /* запретим горизонтальный скролл */
-  padding-bottom: 20px; /* чтобы внизу было чуть воздуха */
+  overflow-y: auto;
+  overflow-x: hidden; /* чтобы не выезжало */
+  padding: 15px;
+  box-sizing: border-box;
 }
-    .page {
-      position: absolute;
-      top: 0;
-      left: 100%;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-      padding: 15px;
-      transition: left 0.4s ease;
-    }
-    .page.active { left: 0; }
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-    @media (max-width: 1200px) {
-      .menu { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 768px) {
-      .menu { grid-template-columns: 1fr; }
-    }
+.page {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 15px;
+  transition: left 0.4s ease;
+}
+.page.active { left: 0; }
 
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 6px 18px var(--shadow);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-    .card h2 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: var(--accent);
-      border-bottom: 2px solid var(--accent-hover);
-      padding-bottom: 6px;
-      text-align: center;
-    }
-    .card ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 10px 0;
-    }
-    .card ul li {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-      font-size: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
-    .card ul li:hover { background: rgba(0,0,0,0.05); }
-    .dish-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-    }
-    .dish-info img {
-      width: 36px;
-      height: 36px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-    .btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-top: 5px;
-    }
-    .btn:hover { background: var(--accent-hover); }
-    .delete-btn {
-      background: none;
-      border: none;
-      color: #cc0000;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0 5px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .card ul li:hover .delete-btn { opacity: 1; }
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  box-sizing: border-box;
+}
 
-    #recipePage img {
-      max-width: 100%;
-      max-height: 280px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      display: none;
-    }
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--shadow);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent-hover);
+  padding-bottom: 6px;
+  text-align: center;
+}
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+.card ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.card ul li:hover { background: rgba(0,0,0,0.05); }
+.dish-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.dish-info img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 5px;
+}
+.btn:hover { background: var(--accent-hover); }
+.delete-btn {
+  background: none;
+  border: none;
+  color: #cc0000;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 5px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.card ul li:hover .delete-btn { opacity: 1; }
+
+#recipePage img {
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  display: none;
+}
   </style>
 </head>
 <body>

@@ -105,24 +105,24 @@ main {
   box-sizing: border-box;
 }
 
-/* Смартфоны (iPhone, до 480px) — 1 карточка */
+/* Айфоны и маленькие смартфоны — 1 карточка */
 @media (max-width: 480px) {
   .menu {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
 
-/* Планшеты (до 768px) — 2 карточки */
+/* Планшеты — 2 карточки */
 @media (max-width: 768px) {
   .menu {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-/* Ноутбуки (до 1024px) — 3 карточки */
+/* Ноутбуки — 3 карточки */
 @media (max-width: 1024px) {
   .menu {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
@@ -201,12 +201,13 @@ main {
   margin-bottom: 15px;
   display: none;
 }
+
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <h1 id="pageTitle">Меню1</h1>
+      <h1 id="pageTitle">Меню</h1>
       <button id="themeToggle">🌙 Тема</button>
       <button id="refreshBtn">🔄 Обновить</button>
     </div>

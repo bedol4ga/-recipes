@@ -35,7 +35,9 @@ body, html {
   background: var(--bg);
   color: var(--text);
   height: 100%;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* убираем горизонтальный скролл */
 }
 
 header {
@@ -99,10 +101,10 @@ main {
   display: grid;
   gap: 16px;
   width: 100%;
-  max-width: 1200px;
-  margin: auto;
+  max-width: 100%;   /* убрали фикс 1200px */
+  margin: 0 auto;
   box-sizing: border-box;
-  grid-template-columns: 1fr; /* по умолчанию — одна колонка (айфоны, мобилки) */
+  grid-template-columns: 1fr; /* по умолчанию одна колонка */
 }
 
 /* Планшеты — 2 карточки */
@@ -133,6 +135,7 @@ main {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 .card h2 {
   font-size: 20px;
@@ -155,6 +158,7 @@ main {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .card ul li:hover { background: rgba(0,0,0,0.05); }
 .dish-info {
@@ -219,7 +223,7 @@ main {
     <div id="menuPage" class="page active">
       <div class="menu">
         <div class="card">
-          <h2>🥐 Завтраки1</h2>
+          <h2>🥐 Завтраки</h2>
           <ul id="breakfast"></ul>
           <button class="btn" onclick="addDish('breakfast')">Добавить блюдо</button>
         </div>

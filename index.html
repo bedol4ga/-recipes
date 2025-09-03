@@ -78,7 +78,7 @@ main {
   min-height: calc(100vh - 80px);
   width: 100%;
   overflow-y: auto;
-  overflow-x: hidden; /* чтобы не выезжало */
+  overflow-x: hidden;
   padding: 15px;
   box-sizing: border-box;
 }
@@ -98,11 +98,32 @@ main {
 .menu {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  gap: 16px;
   width: 100%;
   max-width: 1200px;
   margin: auto;
   box-sizing: border-box;
+}
+
+/* Смартфоны (iPhone, до 480px) — 1 карточка */
+@media (max-width: 480px) {
+  .menu {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Планшеты (до 768px) — 2 карточки */
+@media (max-width: 768px) {
+  .menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Ноутбуки (до 1024px) — 3 карточки */
+@media (max-width: 1024px) {
+  .menu {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .card {
@@ -185,7 +206,7 @@ main {
 <body>
   <header>
     <div class="header-content">
-      <h1 id="pageTitle">Меню</h1>
+      <h1 id="pageTitle">Меню1</h1>
       <button id="themeToggle">🌙 Тема</button>
       <button id="refreshBtn">🔄 Обновить</button>
     </div>

@@ -6,28 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg: #e8f5e9;
-      --card: #ffffff;
-      --text: #2e7d32;
-      --accent: #43a047;
-      --accent-dark: #2e7d32;
+      --bg: #e9f7ec;
+      --card: #fff;
+      --text: #1b4332;
+      --accent: #2d6a4f;
+      --accent-hover: #1b4332;
+      --shadow: rgba(0,0,0,0.15);
     }
     body.dark {
-      --bg: #1b1f1b;
-      --card: #2a2f2a;
-      --text: #c8e6c9;
-      --accent: #66bb6a;
-      --accent-dark: #388e3c;
+      --bg: #1b4332;
+      --card: #2d6a4f;
+      --text: #f1f8f5;
+      --accent: #95d5b2;
+      --accent-hover: #74c69d;
+      --shadow: rgba(0,0,0,0.5);
     }
 
-    html, body {
+    body, html {
       margin: 0;
+      padding: 0;
       font-family: "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
       height: 100%;
-      overflow-x: hidden; /* 🚫 убираем горизонтальный скролл */
     }
 
     header {
@@ -39,56 +41,55 @@
       width: 100%;
       background: var(--bg);
       z-index: 100;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+    header .header-content {
+      display: inline-flex;
       align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
     header h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: 22px;
       color: var(--text);
     }
-    #themeToggle {
+    header button {
       background: var(--accent);
       color: #fff;
       border: none;
-      padding: 8px 14px;
-      border-radius: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s ease;
       font-size: 14px;
-      transition: background 0.3s;
     }
-    #themeToggle:hover { background: var(--accent-dark); }
+    header button:hover { background: var(--accent-hover); }
 
     main {
       position: relative;
       top: 80px;
       height: calc(100vh - 80px);
-      overflow: hidden; /* 🚫 убираем возможность свайпа */
+      width: 100%;
+      overflow: hidden;
     }
-
-    /* страницы */
     .page {
       position: absolute;
       top: 0;
-      left: 100%; /* скрыта справа */
+      left: 100%;
       width: 100%;
       height: 100%;
-      overflow-y: auto; /* ✅ скроллим только внутри активной */
-      padding: 20px;
-      box-sizing: border-box;
-      background: var(--bg);
+      overflow-y: auto;
+      padding: 15px;
       transition: left 0.4s ease;
     }
     .page.active { left: 0; }
 
-    /* меню */
     .menu {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: auto;
     }
     @media (max-width: 1200px) {
@@ -97,10 +98,11 @@
     @media (max-width: 768px) {
       .menu { grid-template-columns: 1fr; }
     }
+
     .card {
       background: var(--card);
       border-radius: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 18px var(--shadow);
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -108,34 +110,35 @@
     .card h2 {
       font-size: 20px;
       margin-bottom: 12px;
-      color: var(--accent-dark);
-      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent-hover);
       padding-bottom: 6px;
       text-align: center;
     }
     .card ul {
       list-style: none;
       padding: 0;
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
     }
     .card ul li {
-      padding: 8px;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
       font-size: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
     }
-    .card ul li:hover { background: rgba(76, 175, 80, 0.1); }
+    .card ul li:hover { background: rgba(0,0,0,0.05); }
     .dish-info {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex: 1;
     }
     .dish-info img {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       object-fit: cover;
       border-radius: 6px;
     }
@@ -144,94 +147,46 @@
       color: #fff;
       border: none;
       padding: 8px 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.3s ease;
       margin-top: 5px;
     }
-    .btn:hover { background: var(--accent-dark); }
+    .btn:hover { background: var(--accent-hover); }
     .delete-btn {
       background: none;
       border: none;
-      color: #c62828;
-      font-size: 16px;
+      color: #cc0000;
+      font-size: 18px;
       cursor: pointer;
+      padding: 0 5px;
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s ease;
     }
     .card ul li:hover .delete-btn { opacity: 1; }
 
-    /* страница рецепта */
-    #recipePage {
-      max-width: 800px;
-      margin: auto;
-    }
-    #recipePage h2 { margin-bottom: 12px; color: var(--accent-dark); }
-    #recipeImage {
+    #recipePage img {
       max-width: 100%;
+      max-height: 280px;
+      object-fit: cover;
       border-radius: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 15px;
       display: none;
-    }
-    #recipeText {
-      font-size: 16px;
-      line-height: 1.5;
-      margin-bottom: 16px;
-    }
-    #recipeEditor {
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-    }
-    #recipeEditor textarea {
-      width: 100%;
-      height: 120px;
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      resize: vertical;
-    }
-    #backBtn { background: #555; }
-    #backBtn:hover { background: #333; }
-
-    /* модальное окно */
-    #dishModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 200;
-    }
-    #dishModal .modal-content {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    }
-    #dishModal input {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 id="pageTitle">Меню</h1>
-    <button id="themeToggle"></button>
+    <div class="header-content">
+      <h1 id="pageTitle">Меню</h1>
+      <button id="themeToggle">🌙 Тема</button>
+      <button id="refreshBtn">🔄 Обновить</button>
+    </div>
   </header>
 
   <main>
-    <!-- Главная страница -->
+    <!-- Главная -->
     <div id="menuPage" class="page active">
       <div class="menu">
         <div class="card">
@@ -257,14 +212,14 @@
       </div>
     </div>
 
-    <!-- Страница рецепта -->
+    <!-- Рецепт -->
     <div id="recipePage" class="page">
       <h2 id="recipeTitle"></h2>
       <img id="recipeImage" alt="Фото блюда">
       <p id="recipeText"></p>
 
-      <div id="recipeEditor">
-        <textarea id="recipeInput"></textarea>
+      <div id="recipeEditor" style="display:none; flex-direction:column; gap:10px;">
+        <textarea id="recipeInput" style="width:100%; height:150px; padding:10px;"></textarea>
         <button class="btn" onclick="saveRecipe()">💾 Сохранить рецепт</button>
         <input type="file" id="imageInput" accept="image/*">
         <button class="btn" onclick="saveImage()">📸 Сохранить картинку</button>
@@ -272,113 +227,74 @@
 
       <button class="btn" id="editBtn" onclick="editRecipe()">✏️ Редактировать рецепт</button>
       <br>
-      <button class="btn" id="backBtn" onclick="showMenu()">⬅ Назад к меню</button>
+      <button class="btn" id="backBtn" onclick="showMenu()">⬅ Назад</button>
     </div>
   </main>
 
-  <!-- Модалка -->
-  <div id="dishModal">
-    <div class="modal-content">
-      <h3>Новое блюдо</h3>
-      <input type="text" id="newDishName" placeholder="Введите название">
-      <button class="btn" onclick="saveNewDish()">Добавить</button>
-      <button class="btn" style="background:#555;" onclick="closeDishModal()">Отмена</button>
-    </div>
-  </div>
-
   <script>
     const defaultMenu = {
-      breakfast: [
-        { name: "Омлет с овощами", recipe: "Взбейте яйца, добавьте овощи, обжарьте.", image: "" },
-        { name: "Сырники", recipe: "Творог + яйцо + мука. Обжарить и подать со сметаной.", image: "" }
-      ],
-      hot: [
-        { name: "Борщ", recipe: "Свекла, капуста, картошка, мясо. Варить 1 час.", image: "" },
-        { name: "Паста карбонара", recipe: "Паста + бекон + яйцо + сыр пармезан.", image: "" }
-      ],
-      bakery: [
-        { name: "Круассан", recipe: "Слоёное тесто, масло. Выпекать до золотистой корочки.", image: "" }
-      ],
-      salads: [
-        { name: "Цезарь", recipe: "Курица, салат, сухарики, соус цезарь.", image: "" }
-      ]
+      breakfast: [{ name: "Омлет", recipe: "Яйца с овощами.", image: "" }],
+      hot: [{ name: "Борщ", recipe: "Свекла, капуста, мясо.", image: "" }],
+      bakery: [{ name: "Круассан", recipe: "Слоёное тесто.", image: "" }],
+      salads: [{ name: "Цезарь", recipe: "Курица, салат, соус.", image: "" }]
     };
 
     let menu = JSON.parse(localStorage.getItem("menu")) || defaultMenu;
     let currentCategory = null;
     let currentIndex = null;
-    let modalCategory = null;
+
+    function saveMenu() { localStorage.setItem("menu", JSON.stringify(menu)); }
 
     function renderMenu() {
-      for (const category in menu) {
-        const ul = document.getElementById(category);
+      for (const cat in menu) {
+        const ul = document.getElementById(cat);
         if (!ul) continue;
         ul.innerHTML = "";
-        if (menu[category].length === 0) {
+        if (menu[cat].length === 0) {
           ul.innerHTML = "<li style='text-align:center; color:#888;'>Нет блюд</li>";
         }
-        menu[category].forEach((dish, index) => {
+        menu[cat].forEach((dish, i) => {
           const li = document.createElement("li");
           li.innerHTML = `
-            <div class="dish-info" onclick="showRecipe('${category}', ${index})">
-              ${dish.image ? `<img src="${dish.image}" alt="">` : ""}
+            <div class="dish-info" onclick="showRecipe('${cat}', ${i})">
+              ${dish.image ? `<img src="${dish.image}">` : ""}
               <span>${dish.name}</span>
             </div>
-            <button class="delete-btn" onclick="deleteDish('${category}', ${index}, event)">❌</button>
+            <button class="delete-btn" onclick="deleteDish('${cat}', ${i}, event)">❌</button>
           `;
           ul.appendChild(li);
         });
       }
     }
 
-    function addDish(categoryId) {
-      modalCategory = categoryId;
-      document.getElementById("dishModal").style.display = "flex";
-    }
-    function closeDishModal() {
-      document.getElementById("dishModal").style.display = "none";
-      document.getElementById("newDishName").value = "";
-      modalCategory = null;
-    }
-    function saveNewDish() {
-      const dishName = document.getElementById("newDishName").value.trim();
-      if (!dishName) return;
-      menu[modalCategory].push({ name: dishName, recipe: "", image: "" });
-      saveMenu();
-      renderMenu();
-      closeDishModal();
-    }
-    function deleteDish(categoryId, index, event) {
-      event.stopPropagation();
-      menu[categoryId].splice(index, 1);
+    function addDish(cat) {
+      const name = prompt("Введите название блюда:");
+      if (!name) return;
+      menu[cat].push({ name, recipe: "", image: "" });
       saveMenu();
       renderMenu();
     }
 
-    function switchPage(fromId, toId) {
-      document.getElementById(fromId).classList.remove("active");
-      document.getElementById(toId).classList.add("active");
+    function deleteDish(cat, i, e) {
+      e.stopPropagation();
+      const dish = menu[cat][i];
+      if (!confirm(`Удалить блюдо "${dish.name}"?`)) return;
+      menu[cat].splice(i, 1);
+      saveMenu();
+      renderMenu();
     }
 
-    function showRecipe(category, index) {
-      currentCategory = category;
-      currentIndex = index;
-      const dish = menu[category][index];
+    function showRecipe(cat, i) {
+      currentCategory = cat;
+      currentIndex = i;
+      const dish = menu[cat][i];
       document.getElementById("pageTitle").innerText = dish.name;
+      document.getElementById("menuPage").classList.remove("active");
+      document.getElementById("recipePage").classList.add("active");
       document.getElementById("recipeTitle").innerText = dish.name;
       document.getElementById("recipeText").innerText = dish.recipe || "Рецепт пока не добавлен.";
-      document.getElementById("recipeEditor").style.display = "none";
-      document.getElementById("recipeText").style.display = "block";
-      document.getElementById("editBtn").style.display = "inline-block";
-
-      const img = document.getElementById("recipeImage");
-      if (dish.image) {
-        img.src = dish.image;
-        img.style.display = "block";
-      } else {
-        img.style.display = "none";
-      }
-      switchPage("menuPage", "recipePage");
+      document.getElementById("recipeImage").style.display = dish.image ? "block" : "none";
+      if (dish.image) document.getElementById("recipeImage").src = dish.image;
     }
 
     function editRecipe() {
@@ -394,13 +310,16 @@
       menu[currentCategory][currentIndex].recipe = newRecipe.trim();
       saveMenu();
       showRecipe(currentCategory, currentIndex);
+      document.getElementById("recipeText").style.display = "block";
+      document.getElementById("recipeEditor").style.display = "none";
+      document.getElementById("editBtn").style.display = "inline-block";
     }
 
     function saveImage() {
       const file = document.getElementById("imageInput").files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = e => {
         menu[currentCategory][currentIndex].image = e.target.result;
         saveMenu();
         showRecipe(currentCategory, currentIndex);
@@ -410,29 +329,30 @@
 
     function showMenu() {
       document.getElementById("pageTitle").innerText = "Меню";
-      switchPage("recipePage", "menuPage");
+      document.getElementById("menuPage").classList.add("active");
+      document.getElementById("recipePage").classList.remove("active");
     }
 
-    function saveMenu() {
-      localStorage.setItem("menu", JSON.stringify(menu));
+    // Тема
+    const themeToggle = document.getElementById("themeToggle");
+    function applyTheme() {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+        themeToggle.innerText = "☀️ Тема";
+      } else {
+        document.body.classList.remove("dark");
+        themeToggle.innerText = "🌙 Тема";
+      }
     }
-
-    // === Тема ===
-    const themeBtn = document.getElementById("themeToggle");
-    function updateThemeButton() {
-      themeBtn.textContent = document.body.classList.contains("dark")
-        ? "☀️ Светлая тема"
-        : "🌙 Тёмная тема";
-    }
-    themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-      updateThemeButton();
+    themeToggle.addEventListener("click", () => {
+      const newTheme = document.body.classList.contains("dark") ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      applyTheme();
     });
-    if (localStorage.getItem("theme") === "dark") {
-      document.body.classList.add("dark");
-    }
-    updateThemeButton();
+    applyTheme();
+
+    // Обновление
+    document.getElementById("refreshBtn").addEventListener("click", () => location.reload());
 
     renderMenu();
   </script>
